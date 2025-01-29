@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
-import sys
+import argparse
 
 import pandas as pd
 import scipy
 
 
-def analyze(time_frame: int):
-    df = pd.read_csv('Hours.csv', low_memory=False)
+def analyze(time_frame: int, filename: str):
+    df = pd.read_csv(filename, low_memory=False)
 
     week_data = [[], []]
     for person in df.columns:
@@ -72,6 +72,12 @@ def analyze(time_frame: int):
 
 
 if __name__ == '__main__':
-    # Update this to use the argparse module. The value being provided is the number of days to anaylze, and should be set to 365 by default if not provided. Also support an argument to specify the filename, but use "Hours.csv" as a default. AI!
-    hours: int = int(sys.argv[1]) * 24
-    analyze(hours)
+    parser = argparse.ArgumentParser(description='Analyze hourly data patterns')
+    parser.add_argument('--days', type=int, default=365,
+                      help='number of days to analyze (default: 365)')
+    parser.add_argument('--file', type=str, default='Hours.csv',
+                      help='input CSV file (default: Hours.csv)')
+    
+    args = parser.parse_args()
+    hours: int = args.days * 24
+    analyze(hours, args.file)
