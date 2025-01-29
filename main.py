@@ -30,7 +30,7 @@ def analyze(time_frame: int, filename: str):
         stripped = pd.to_numeric(person_df, errors='raise')
 
         # Ensure enough data
-        if len(stripped) < time_frame:
+        if len(stripped) < time_frame * 2:
             continue
 
         # We need to ignore people with solar
