@@ -72,5 +72,6 @@ def analyze(time_frame: int):
 
 
 if __name__ == '__main__':
+    # Update this to use the argparse module. The value being provided is the number of days to anaylze, and should be set to 365 by default if not provided. Also support an argument to specify the filename, but use "Hours.csv" as a default. AI!
     hours: int = int(sys.argv[1]) * 24
     analyze(hours)
