@@ -34,11 +34,23 @@ def analyze(time_frame: int):
             continue
 
         # We need to ignore people with solar
-        has_negative = False
+        invalid = False
         for x in stripped:
             if x < 0:
-                has_negative = True
-        if has_negative:
+                invalid = True
+
+        consecutive_zeros = 0
+        for value in stripped:
+            if value == 0:
+                consecutive_zeros += 1
+                if consecutive_zeros >= 48:
+                    print(f"Data hole: {person}")
+                    invalid = True
+                    break
+            else:
+                consecutive_zeros = 0
+
+        if invalid:
             continue
 
         week_data[0].append(sum(stripped.iloc[:time_frame]))
