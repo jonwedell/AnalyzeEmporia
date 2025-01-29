@@ -27,7 +27,7 @@ def analyze(time_frame: int):
         person_df = person_df.loc[first_idx:last_idx]
 
         # Convert to numeric
-        stripped = pd.to_numeric(person_df)
+        stripped = pd.to_numeric(person_df, errors='raise')
 
         # Ensure enough data
         if len(stripped) < time_frame:
@@ -44,7 +44,6 @@ def analyze(time_frame: int):
             if value == 0:
                 consecutive_zeros += 1
                 if consecutive_zeros >= 48:
-                    print(f"Data hole: {person}")
                     invalid = True
                     break
             else:
