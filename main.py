@@ -13,7 +13,8 @@ def analyze(time_frame: int):
         if person == 'Time Bucket (America/Chicago)':
             continue
         stripped = df[person][df[person].notnull()]
-        # Update the stripped dataframe to replace all "No CT" values with nulls, and then convert all values to a float AI!
+        stripped = stripped.replace('No CT', pd.NA)
+        stripped = pd.to_numeric(stripped, errors='coerce')
 
         if len(stripped) < time_frame:
             continue
