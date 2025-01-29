@@ -6,13 +6,15 @@ import scipy
 
 
 def analyze(time_frame: int):
-    df = pd.read_csv('Hours.csv')
+    df = pd.read_csv('Hours.csv', low_memory=False)
 
     week_data = [[], []]
     for person in df.columns:
         if person == 'Time Bucket (America/Chicago)':
             continue
         stripped = df[person][df[person].notnull()]
+        # Update the stripped dataframe to replace all "No CT" values with nulls, and then convert all values to a float AI!
+
         if len(stripped) < time_frame:
             continue
 
