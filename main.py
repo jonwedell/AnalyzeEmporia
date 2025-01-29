@@ -10,12 +10,26 @@ def analyze(time_frame: int):
 
     week_data = [[], []]
     for person in df.columns:
+        # Skip the first line
         if person == 'Time Bucket (America/Chicago)':
             continue
-        stripped = df[person][df[person].notnull()]
-        stripped = stripped.replace('No CT', pd.NA)
-        stripped = pd.to_numeric(stripped, errors='coerce')
 
+        person_df = df[person]
+
+        # Convert "No CT" to an actual null
+        person_df = person_df.replace('No CT', pd.NA)
+
+        # Strip nulls from the beginning and the end
+        first_idx = person_df.first_valid_index()
+        last_idx = person_df.last_valid_index()
+        if first_idx is None or last_idx is None:
+            continue
+        person_df = person_df.loc[first_idx:last_idx]
+
+        # Convert to numeric
+        stripped = pd.to_numeric(person_df)
+
+        # Ensure enough data
         if len(stripped) < time_frame:
             continue
 
